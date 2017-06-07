@@ -48,3 +48,5 @@ lazy val `hello-stream-impl` = (project in file("hello-stream-impl"))
     )
   )
   .dependsOn(`hello-stream-api`, `hello-api`)
+
+lagomCassandraCleanOnStart in ThisBuild := true

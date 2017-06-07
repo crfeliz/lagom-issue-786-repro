@@ -1,7 +1,6 @@
 target
 ideatarget
 .target
-bin
 .cache
 .cache-main
 .cache-tests
@@ -11,3 +10,5 @@ bin
 .factorypath
 .settings
 logs
+.idea
+.DS_Store

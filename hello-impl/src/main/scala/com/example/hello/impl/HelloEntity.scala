@@ -3,12 +3,13 @@ package com.example.hello.impl
 import java.time.LocalDateTime
 
 import akka.Done
-import com.lightbend.lagom.scaladsl.persistence.{AggregateEvent, AggregateEventTag, PersistentEntity}
 import com.lightbend.lagom.scaladsl.persistence.PersistentEntity.ReplyType
+import com.lightbend.lagom.scaladsl.persistence.{AggregateEvent, AggregateEventTag, PersistentEntity}
 import com.lightbend.lagom.scaladsl.playjson.{JsonSerializer, JsonSerializerRegistry}
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json._
 
 import scala.collection.immutable.Seq
+
 
 /**
   * This is an event sourced entity. It has a state, [[HelloState]], which
@@ -105,6 +106,21 @@ sealed trait HelloEvent extends AggregateEvent[HelloEvent] {
 
 object HelloEvent {
   val Tag = AggregateEventTag[HelloEvent]
+  private val greetingMessageChangedFormat: Format[GreetingMessageChanged] = Json.format
+
+  implicit val format: Format[HelloEvent] = new Format[HelloEvent] {
+    override def reads(json: JsValue): JsResult[HelloEvent] =
+      (json \ "$type").asOpt[String] match {
+        case Some("GREETING_MESSAGE_CHANGED") => greetingMessageChangedFormat.reads(json)
+        case _ => JsError()
+      }
+
+    override def writes(o: HelloEvent): JsValue =
+      o match {
+        case gmc: GreetingMessageChanged => greetingMessageChangedFormat.writes(gmc)
+      }
+  }
+
 }
 
 /**
@@ -112,16 +128,6 @@ object HelloEvent {
   */
 case class GreetingMessageChanged(message: String) extends HelloEvent
 
-object GreetingMessageChanged {
-
-  /**
-    * Format for the greeting message changed event.
-    *
-    * Events get stored and loaded from the database, hence a JSON format
-    * needs to be declared so that they can be serialized and deserialized.
-    */
-  implicit val format: Format[GreetingMessageChanged] = Json.format
-}
 
 /**
   * This interface defines all the commands that the HelloWorld entity supports.
@@ -185,7 +191,7 @@ object HelloSerializerRegistry extends JsonSerializerRegistry {
   override def serializers: Seq[JsonSerializer[_]] = Seq(
     JsonSerializer[UseGreetingMessage],
     JsonSerializer[Hello],
-    JsonSerializer[GreetingMessageChanged],
+    JsonSerializer[HelloEvent],
     JsonSerializer[HelloState]
   )
 }
