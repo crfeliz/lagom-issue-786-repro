@@ -106,7 +106,7 @@ sealed trait HelloEvent extends AggregateEvent[HelloEvent] {
 
 object HelloEvent {
   val Tag = AggregateEventTag[HelloEvent]
-  private val greetingMessageChangedFormat: Format[GreetingMessageChanged] = Json.format
+  private val greetingMessageChangedFormat: OFormat[GreetingMessageChanged] = Json.format
 
   implicit val format: Format[HelloEvent] = new Format[HelloEvent] {
     override def reads(json: JsValue): JsResult[HelloEvent] =
@@ -117,7 +117,8 @@ object HelloEvent {
 
     override def writes(o: HelloEvent): JsValue =
       o match {
-        case gmc: GreetingMessageChanged => greetingMessageChangedFormat.writes(gmc)
+        case gmc: GreetingMessageChanged =>
+          greetingMessageChangedFormat.writes(gmc) ++ Json.obj("$type" -> "GREETING_MESSAGE_CHANGED")
       }
   }
 
