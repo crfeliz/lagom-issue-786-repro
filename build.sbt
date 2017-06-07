@@ -24,6 +24,7 @@ lazy val `hello-impl` = (project in file("hello-impl"))
       lagomScaladslPersistenceCassandra,
       lagomScaladslKafkaBroker,
       lagomScaladslTestKit,
+      "com.lightbend.lagom" %% "lagom-scaladsl-play-json" % "1.4.1-SNAPSHOT" force(),
       macwire,
       scalaTest
     )
@@ -49,4 +50,4 @@ lazy val `hello-stream-impl` = (project in file("hello-stream-impl"))
   )
   .dependsOn(`hello-stream-api`, `hello-api`)
 
-lagomCassandraCleanOnStart in ThisBuild := true
+//lagomCassandraCleanOnStart in ThisBuild := true
