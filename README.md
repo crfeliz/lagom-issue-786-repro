@@ -1,5 +1,7 @@
 Rerpoduces [lagom issue 786](https://github.com/lagom/lagom/issues/786)
 
+See ed4065186e727adcc885e1f75482ef4091a16fa6 for changes made to the default lagom hello project. 
+
 To reproduce
 - sbt runAll
 - curl the hello endpoint
