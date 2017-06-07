@@ -18,7 +18,7 @@ curl -X POST \
 [warn] a.s.Serialization(akka://hello-impl-application) - Multiple serializers found for class com.example.hello.impl.GreetingMessageChanged, choosing first: Vector((interface java.io.Serializable,akka.serialization.JavaSerializer@7b9c3f10), (interface com.example.hello.impl.HelloEvent,com.lightbend.lagom.scaladsl.playjson.PlayJsonSerializer@6f2d0596))
 [warn] a.s.Serialization(akka://hello-impl-application) - Using the default Java serializer for class [com.example.hello.impl.GreetingMessageChanged] which is not recommended because of performance implications. Use another serializer or disable this warning using the setting 'akka.actor.warn-about-java-serializer-usage'
 ```
-- comment out line 14 in the hello-impl project's application.conf (`"java.io.Serializable" = none`)
+- uncomment line 14 in the hello-impl project's application.conf (`"java.io.Serializable" = none`)
 - curl it again (same request)
 - you should see the following errors:
 ```
