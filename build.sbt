@@ -24,7 +24,7 @@ lazy val `hello-impl` = (project in file("hello-impl"))
       lagomScaladslPersistenceCassandra,
       lagomScaladslKafkaBroker,
       lagomScaladslTestKit,
-      "com.lightbend.lagom" %% "lagom-scaladsl-play-json" % "1.4.1-SNAPSHOT" force(),
+      "com.lightbend.lagom" %% "lagom-scaladsl-play-json" % "1.4.0-SNAPSHOT" force(),
       macwire,
       scalaTest
     )
